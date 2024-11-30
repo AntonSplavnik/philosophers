@@ -6,7 +6,7 @@
 /*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 20:35:02 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/11/30 23:23:48 by antonsplavn      ###   ########.fr       */
+/*   Updated: 2024/12/01 00:03:44 by antonsplavn      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,22 +81,4 @@ char	*ft_strncpy(char *dest, const char *src, size_t n)
 	}
 	dest[i] = '\0';
 	return (dest);
-}
-
-int	ft_strcmp(char *input1, char *input2)
-{
-	int	i;
-
-	i = 0;
-	while (input1[i])
-	{
-		if (input1[i] != input2[i])
-		{
-			return (1);
-		}
-		i++;
-	}
-	if (input1[i] || input2[i])
-		return (1);
-	return (0);
 }

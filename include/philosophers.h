@@ -6,7 +6,7 @@
 /*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/11/30 23:44:09 by antonsplavn      ###   ########.fr       */
+/*   Updated: 2024/12/01 00:04:23 by antonsplavn      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ void	empty_argument_checker(char **argv);
 int		input_restrictions_helper(char *input_str, int i);
 int		input_restrictions(char *input_str);
 int		limits(long number);
+
+// utils 2
+
 
 // utils
 void	ft_putstr(char *str);
