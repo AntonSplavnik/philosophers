@@ -6,7 +6,7 @@
 /*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 20:35:02 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/11/30 22:46:46 by antonsplavn      ###   ########.fr       */
+/*   Updated: 2024/11/30 23:23:48 by antonsplavn      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ void	*ft_calloc(size_t num, size_t size)
 	return (new_allocation);
 }
 
-long	ft_atoi(char *input_str)
+int	ft_atoi(char *input_str)
 {
 	int		i;
 	int		sign;
-	long	result;
+	int		result;
 
 	i = 0;
 	sign = 1;

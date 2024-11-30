@@ -6,7 +6,7 @@
 /*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/11/30 22:52:50 by antonsplavn      ###   ########.fr       */
+/*   Updated: 2024/11/30 23:44:09 by antonsplavn      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdio.h>
+
 
 typedef struct s_philo
 {
@@ -33,7 +35,7 @@ int		main(int argc, char **argv);
 
 // parsing.c
 int		process_and_validate_argument(char *argv);
-void	parsing(t_philo *philo, char **argv);
+void	parsing(t_philo *philo, int argc, char **argv);
 
 // parsing_utils.c
 void	empty_argument_checker(char **argv);
@@ -45,7 +47,7 @@ int		limits(long number);
 void	ft_putstr(char *str);
 void	ft_bzero(void *str, size_t number);
 void	*ft_calloc(size_t num, size_t size);
-long	ft_atoi(char *input_str);
+int		ft_atoi(char *input_str);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 int		ft_strcmp(char *input1, char *input2);
 
