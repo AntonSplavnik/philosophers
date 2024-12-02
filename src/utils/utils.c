@@ -6,7 +6,7 @@
 /*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 20:35:02 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/01 00:03:44 by antonsplavn      ###   ########.fr       */
+/*   Updated: 2024/12/02 15:06:26 by antonsplavn      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,4 @@ int	ft_atoi(char *input_str)
 		i++;
 	}
 	return ((result * sign));
-}
-
-char	*ft_strncpy(char *dest, const char *src, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (src[i] && i < n)
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
 }
