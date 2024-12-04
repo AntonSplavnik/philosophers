@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/04 19:18:48 by asplavni         ###   ########.fr       */
+/*   Updated: 2024/12/04 21:57:25 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,29 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <pthread.h>
 
-
-typedef struct s_philo
+typedef struct s_data
 {
 	int	number_of_philosophers;
 	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	number_of_times_each_philosopher_must_eat;
-}			t_philo;
+}	t_data;
+
+typedef struct s_philos
+{
+	pthread_t	*philos;
+
+}	t_philos;
 
 // main.c
 int		main(int argc, char **argv);
 
 // parsing.c
 int		process_and_validate_argument(char *argv);
-void	parsing(t_philo *philo, int argc, char **argv);
+void	parsing(t_data *philo, int argc, char **argv);
 
 // parsing_utils.c
 void	argument_checker(int argc, char **argv);
@@ -54,8 +60,10 @@ int		ft_atoi(char *input_str);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 int		ft_strcmp(char *input1, char *input2);
 
-
 // ft_split
 char	**ft_split(char *input, char c);
+
+//init
+void	init_threads(t_data *data, t_philos *philos);
 
 #endif

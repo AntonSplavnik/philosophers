@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+         #
+#    By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/30 22:22:02 by antonsplavn       #+#    #+#              #
-#    Updated: 2024/12/01 00:09:03 by antonsplavn      ###   ########.fr        #
+#    Updated: 2024/12/04 21:03:50 by asplavni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,20 +19,24 @@ SRC_DIR = src
 OBJ_DIR = obj
 INC_DIR = include
 
+
 # Subdirectories inside src
 UTILS_DIR = $(SRC_DIR)/utils
 PARSING_DIR = $(SRC_DIR)/parsing
+INIT_DIR = $(SRC_DIR)/init
 
 # Source Files
 SRCS = $(wildcard $(SRC_DIR)/*.c) \
        $(wildcard $(UTILS_DIR)/*.c) \
-       $(wildcard $(PARSING_DIR)/*.c)
+       $(wildcard $(PARSING_DIR)/*.c)\
+	   $(wildcard $(INIT_DIR)/*.c)
 
 # Object Files (output in obj/)
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, \
 	   $(patsubst $(UTILS_DIR)/%.c, $(OBJ_DIR)/%.o, \
 	   $(patsubst $(PARSING_DIR)/%.c, $(OBJ_DIR)/%.o, \
-	   $(SRCS))))
+	   $(patsubst $(INIT_DIR)/%.c, $(OBJ_DIR)/%.o, \
+	   $(SRCS)))))
 
 # Output Binary Name
 NAME = philosophers
@@ -54,6 +58,10 @@ $(OBJ_DIR)/%.o: $(UTILS_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/%.o: $(PARSING_DIR)/%.c
+	mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR)/%.o: $(INIT_DIR)/%.c
 	mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
