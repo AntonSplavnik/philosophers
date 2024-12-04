@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
+/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/01 00:04:23 by antonsplavn      ###   ########.fr       */
+/*   Updated: 2024/12/04 19:18:48 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int		process_and_validate_argument(char *argv);
 void	parsing(t_philo *philo, int argc, char **argv);
 
 // parsing_utils.c
-void	empty_argument_checker(char **argv);
+void	argument_checker(int argc, char **argv);
 int		input_restrictions_helper(char *input_str, int i);
 int		input_restrictions(char *input_str);
 int		limits(long number);

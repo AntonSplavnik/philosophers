@@ -3,20 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
+/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:11:22 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/11/30 23:59:10 by antonsplavn      ###   ########.fr       */
+/*   Updated: 2024/12/04 19:19:38 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	empty_argument_checker(char **argv)
+void	argument_checker(int argc, char **argv)
 {
 	int	i;
 
 	i = 1;
+
+	if (argc > 6)
+	{
+		ft_putstr("Too many arguments. 5 - 6\n");
+		exit (1);
+	}
+	else if (argc < 5)
+	{
+		ft_putstr("Not enough arguments. 5 - 6\n");
+		exit (1);
+	}
 	while (argv[i])
 	{
 		if (argv[i][0] == '\0')
