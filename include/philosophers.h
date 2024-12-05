@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/04 21:57:25 by asplavni         ###   ########.fr       */
+/*   Updated: 2024/12/04 22:34:18 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_data
 
 typedef struct s_philos
 {
-	pthread_t	*philos;
+	pthread_t	*id;
 
 }	t_philos;
 
@@ -64,6 +64,7 @@ int		ft_strcmp(char *input1, char *input2);
 char	**ft_split(char *input, char c);
 
 //init
-void	init_threads(t_data *data, t_philos *philos);
+void	threads_init(t_data *data, t_philos *philos);
+void	thread_join(t_data *data, t_philos *philos);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 15:50:49 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/04 22:07:21 by asplavni         ###   ########.fr       */
+/*   Updated: 2024/12/05 17:44:37 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ int	main(int argc, char **argv)
 
 	argument_checker(argc, argv);
 	parsing(&data, argc, argv);
-	init_threads(&data, &philos);
+	threads_init(&data, &philos);
+	thread_join(&data, &philos);
+	free((void *)philos.id);
 
 	printf("philo.number_of_philosophers: %d\n", data.number_of_philosophers);
 	printf("philo.time_to_eat: %d\n", data.time_to_eat);
