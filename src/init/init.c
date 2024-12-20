@@ -6,20 +6,11 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:47:38 by asplavni          #+#    #+#             */
-/*   Updated: 2024/12/04 22:34:34 by asplavni         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:09:08 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-void	*routine(void *arg)
-{
-	(void)arg;
-	printf("eating...\n");
-	sleep(3);
-	printf("sleeping...\n");
-	return (NULL);
-}
 
 void	threads_init(t_data *data, t_philos *philos)
 {

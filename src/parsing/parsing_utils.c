@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:11:22 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/04 19:19:38 by asplavni         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:23:34 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,19 @@ void	argument_checker(int argc, char **argv)
 
 	if (argc > 6)
 	{
-		ft_putstr("Too many arguments. 5 - 6\n");
+		ft_putstr("Too many arguments. should be between (5 - 6) arguments\n");
 		exit (1);
 	}
 	else if (argc < 5)
 	{
-		ft_putstr("Not enough arguments. 5 - 6\n");
+		ft_putstr("Not enough arguments. Should be between (5 - 6) arguments\n");
 		exit (1);
 	}
 	while (argv[i])
 	{
 		if (argv[i][0] == '\0')
 		{
-			ft_putstr("Error: empty argument\n");
+			ft_putstr("Error: empty argument found\n");
 			exit (1);
 		}
 		i++;
@@ -43,12 +43,12 @@ int	input_restrictions_helper(char *input_str, int i)
 {
 	if (input_str[i] == ' ')
 	{
-		ft_putstr("Error: space\n");
+		ft_putstr("Error: space found\n");
 		exit (1);
 	}
 	else if (input_str[i] < '0' || input_str[i] > '9')
 	{
-		ft_putstr("Error: non numeric value\n");
+		ft_putstr("Error: non numeric value found\n");
 		exit (1);
 	}
 	return (0);
@@ -67,7 +67,7 @@ int	input_restrictions(char *input_str)
 	if (input_str[i] == '0' && \
 		(input_str[i + 1] >= '0' && input_str[i + 1] <= '9'))
 	{
-		ft_putstr ("Error: 0 before a number\n");
+		ft_putstr ("Error: 0 before a number found\n");
 		exit (1);
 	}
 	while (input_str[i])
@@ -83,7 +83,7 @@ int	limits(long number)
 {
 	if (number > INT_MAX || number < INT_MIN)
 	{
-		ft_putstr("Error: limits\n");
+		ft_putstr("Error: limits exceeded\n");
 		exit (1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/04 22:34:18 by asplavni         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:26:51 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,14 @@ typedef struct s_philos
 }	t_philos;
 
 // main.c
+void	*routine(void *arg);
 int		main(int argc, char **argv);
 
+//init
+void	threads_init(t_data *data, t_philos *philos);
+void	thread_join(t_data *data, t_philos *philos);
+
 // parsing.c
-int		process_and_validate_argument(char *argv);
 void	parsing(t_data *philo, int argc, char **argv);
 
 // parsing_utils.c
@@ -48,9 +52,6 @@ void	argument_checker(int argc, char **argv);
 int		input_restrictions_helper(char *input_str, int i);
 int		input_restrictions(char *input_str);
 int		limits(long number);
-
-// utils 2
-
 
 // utils
 void	ft_putstr(char *str);
@@ -60,11 +61,10 @@ int		ft_atoi(char *input_str);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 int		ft_strcmp(char *input1, char *input2);
 
+// utils 2
+
 // ft_split
 char	**ft_split(char *input, char c);
 
-//init
-void	threads_init(t_data *data, t_philos *philos);
-void	thread_join(t_data *data, t_philos *philos);
 
 #endif

@@ -6,11 +6,21 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 15:50:49 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/05 17:44:37 by asplavni         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:09:38 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+void	*routine(void *argv)
+{
+	(void)argv;
+
+	printf("eating...\n");
+	sleep(3);
+	printf("sleeping...\n");
+	return (NULL);
+}
 
 int	main(int argc, char **argv)
 {
