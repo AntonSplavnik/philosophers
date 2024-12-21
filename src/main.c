@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 15:50:49 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/20 18:09:38 by asplavni         ###   ########.fr       */
+/*   Updated: 2024/12/21 15:43:36 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,18 @@ void	*routine(void *argv)
 int	main(int argc, char **argv)
 {
 	t_data		data;
-	t_philos	philos;
 
 	argument_checker(argc, argv);
 	parsing(&data, argc, argv);
-	threads_init(&data, &philos);
-	thread_join(&data, &philos);
-	free((void *)philos.id);
+	threads_init(&data);
+	thread_join(&data);
+	free((void *)data.threads);
 
-	printf("philo.number_of_philosophers: %d\n", data.number_of_philosophers);
-	printf("philo.time_to_eat: %d\n", data.time_to_eat);
-	printf("philo.time_to_sleep: %d\n", data.time_to_sleep);
-	printf("philo.time_to_die: %d\n", data.time_to_die);
+	printf("number of philosophers: %d\n", data.number_of_philosophers);
+	printf("time to eat: %d\n", data.time_to_eat);
+	printf("time to sleep: %d\n", data.time_to_sleep);
+	printf("time to die: %d\n", data.time_to_die);
 	if (argc == 6)
-		printf("philo.number_of_times_each_philosopher_must_eat: %d\n", data.number_of_times_each_philosopher_must_eat);
+		printf("number of times each philosopher must eat: %d\n", data.number_of_times_each_philosopher_must_eat);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/20 18:26:51 by asplavni         ###   ########.fr       */
+/*   Updated: 2024/12/21 15:33:57 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,14 @@ typedef struct s_data
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	number_of_times_each_philosopher_must_eat;
+
+	pthread_t	*threads;
+
 }	t_data;
 
 typedef struct s_philos
 {
-	pthread_t	*id;
+	int	id;
 
 }	t_philos;
 
@@ -41,8 +44,8 @@ void	*routine(void *arg);
 int		main(int argc, char **argv);
 
 //init
-void	threads_init(t_data *data, t_philos *philos);
-void	thread_join(t_data *data, t_philos *philos);
+void	threads_init(t_data *data);
+void	thread_join(t_data *data);
 
 // parsing.c
 void	parsing(t_data *philo, int argc, char **argv);
