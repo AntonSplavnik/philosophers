@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/21 15:33:57 by asplavni         ###   ########.fr       */
+/*   Updated: 2024/12/21 21:47:23 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_data
 	int	number_of_times_each_philosopher_must_eat;
 
 	pthread_t	*threads;
+	pthread_mutex_t	*forks;
 
 }	t_data;
 
@@ -37,15 +38,22 @@ typedef struct s_philos
 {
 	int	id;
 
+	int	is_dead;
+	int	has_eaten;
+
 }	t_philos;
 
 // main.c
+void	free_all(t_data *data);
 void	*routine(void *arg);
 int		main(int argc, char **argv);
 
 //init
 void	threads_init(t_data *data);
 void	thread_join(t_data *data);
+void	mutex_init(t_data *data);
+void	mutex_destroy(t_data *data);
+
 
 // parsing.c
 void	parsing(t_data *philo, int argc, char **argv);
