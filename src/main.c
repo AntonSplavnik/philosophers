@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 15:50:49 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/21 21:53:27 by asplavni         ###   ########.fr       */
+/*   Updated: 2024/12/22 13:56:59 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 void free_all(t_data *data)
 {
-	free (data->threads);
-	// free ((void *)data->forks);
-	free (data);
+	free((void *)data->threads);
+	free((void *)data->forks);
 }
 
 void	*routine(void *argv)
@@ -24,10 +23,11 @@ void	*routine(void *argv)
 	(void)argv;
 
 	printf("eating...\n");
-	sleep(3);
+	sleep(1);
 	printf("sleeping...\n");
-	sleep(3);
+	sleep(1);
 	printf("thinking...\n");
+	sleep(1);
 	return (NULL);
 }
 
@@ -37,12 +37,11 @@ int	main(int argc, char **argv)
 
 	argument_checker(argc, argv);
 	parsing(&data, argc, argv);
+	mutex_init(&data);
 	threads_init(&data);
-	// mutex_init(&data);
 	thread_join(&data);
-	// mutex_destroy(&data);
-	// free_all(&data);
-	// free((void *)data.threads);
+	mutex_destroy(&data);
+	free_all(&data);
 
 	printf("number of philosophers: %d\n", data.number_of_philosophers);
 	printf("time to eat: %d\n", data.time_to_eat);

@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:47:38 by asplavni          #+#    #+#             */
-/*   Updated: 2024/12/21 21:50:02 by asplavni         ###   ########.fr       */
+/*   Updated: 2024/12/22 13:53:20 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ void	mutex_init(t_data *data)
 			free_all(data);
 			exit (1);
 		}
+		i++;
 	}
-
 }
 
 void	mutex_destroy(t_data *data)
@@ -84,5 +84,6 @@ void	mutex_destroy(t_data *data)
 			free_all(data);
 			exit (1);
 		}
+		i++;
 	}
 }
