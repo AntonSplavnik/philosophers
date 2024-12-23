@@ -6,12 +6,26 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:47:38 by asplavni          #+#    #+#             */
-/*   Updated: 2024/12/22 13:53:20 by asplavni         ###   ########.fr       */
+/*   Updated: 2024/12/23 19:59:33 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+void	philo_init(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	data->philos = malloc(data->number_of_philosophers * sizeof(t_philos));
+	while (i < data->number_of_philosophers)
+	{
+		data->philos[i].id = i;
+		data->philos[i].has_eaten = 0;
+		data->philos[i].is_dead = 0;
+		i++;
+	}
+}
 void	threads_init(t_data *data)
 {
 	int	i;
