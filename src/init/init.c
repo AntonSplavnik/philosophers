@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
+/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:47:38 by asplavni          #+#    #+#             */
-/*   Updated: 2025/01/08 18:39:02 by antonsplavn      ###   ########.fr       */
+/*   Updated: 2025/01/13 19:36:35 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,17 @@ void	philo_init(t_data *data)
 
 	i = 0;
 	data->philos = malloc(data->number_of_philosophers * sizeof(t_philos));
+	if(data->philos == NULL)
+	{
+		free_all(data);
+		exit(1);
+	}
 	while (i < data->number_of_philosophers)
 	{
 		data->philos[i].id = i + 1;
 		data->philos[i].has_eaten = 0;
 		data->philos[i].is_dead = 0;
+		data->philos[i].death_timer =
 
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1) % data->number_of_philosophers];
