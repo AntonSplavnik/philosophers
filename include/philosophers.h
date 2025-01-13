@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/23 20:06:47 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/08 17:38:05 by antonsplavn      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@ typedef struct s_philos
 	int	id;
 	int	is_dead;
 	int	has_eaten;
-	int	started_eating;
+	int	death_timer;
 
+	pthread_mutex_t *left_fork;
+	pthread_mutex_t *right_fork;
 }	t_philos;
 
 typedef struct s_data
@@ -40,25 +42,23 @@ typedef struct s_data
 
 	t_philos *philos;
 
-	pthread_t	*threads;\
+	pthread_t	*threads;
 	pthread_mutex_t	*forks;
-
 }	t_data;
-
 
 
 // main.c
 void	free_all(t_data *data);
-void	*routine(void *arg);
+void	*routine(void *data);
 int		main(int argc, char **argv);
 
 //init
+void	init_all(t_data *data);
 void	philo_init(t_data *data);
 void	threads_init(t_data *data);
 void	thread_join(t_data *data);
 void	mutex_init(t_data *data);
 void	mutex_destroy(t_data *data);
-
 
 // parsing.c
 void	parsing(t_data *philo, int argc, char **argv);

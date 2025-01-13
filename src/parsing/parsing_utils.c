@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:11:22 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/20 18:23:34 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/04 17:03:48 by antonsplavn      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ void	argument_checker(int argc, char **argv)
 
 	if (argc > 6)
 	{
-		ft_putstr("Too many arguments. should be between (5 - 6) arguments\n");
+		ft_putstr("Too many arguments. should be (4 - 4) arguments\n");
 		exit (1);
 	}
 	else if (argc < 5)
 	{
-		ft_putstr("Not enough arguments. Should be between (5 - 6) arguments\n");
+		ft_putstr("Not enough arguments. Should be (4 - 5) arguments\n");
 		exit (1);
 	}
 	while (argv[i])

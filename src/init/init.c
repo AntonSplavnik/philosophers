@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:47:38 by asplavni          #+#    #+#             */
-/*   Updated: 2024/12/23 19:59:33 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/08 18:39:02 by antonsplavn      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+void	init_all(t_data *data)
+{
+	data->philos = NULL;
+	data->threads = NULL;
+	data->forks = NULL;
+}
 
 void	philo_init(t_data *data)
 {
@@ -20,12 +27,16 @@ void	philo_init(t_data *data)
 	data->philos = malloc(data->number_of_philosophers * sizeof(t_philos));
 	while (i < data->number_of_philosophers)
 	{
-		data->philos[i].id = i;
+		data->philos[i].id = i + 1;
 		data->philos[i].has_eaten = 0;
 		data->philos[i].is_dead = 0;
+
+		data->philos[i].left_fork = &data->forks[i];
+		data->philos[i].right_fork = &data->forks[(i + 1) % data->number_of_philosophers];
 		i++;
 	}
 }
+
 void	threads_init(t_data *data)
 {
 	int	i;
@@ -44,6 +55,7 @@ void	threads_init(t_data *data)
 			free_all(data);
 			exit (1);
 		}
+		// usleep(1);
 		i++;
 	}
 }

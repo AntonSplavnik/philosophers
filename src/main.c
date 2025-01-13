@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 15:50:49 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/23 20:05:36 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/07 17:01:05 by antonsplavn      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,24 @@
 
 void free_all(t_data *data)
 {
-	free((void *)data->threads);
-	free((void *)data->forks);
+	free(data->philos);
+	free(data->threads);
+	free(data->forks);
 }
 
-void	*routine(void *argv)
-{
-	(void)argv;
-
-	printf("eating...\n");
-	sleep(1);
-	printf("sleeping...\n");
-	sleep(1);
-	printf("thinking...\n");
-	sleep(1);
-	return (NULL);
-}
+	void	*routine(void *data)
+	{
+		(void)data;
+		// mutex
+		printf("eating...\n");
+		sleep(1);
+		// mutex + 1
+		printf("sleeping...\n");
+		sleep(1);
+		printf("thinking...\n");
+		sleep(1);
+		return (NULL);
+	}
 
 int	main(int argc, char **argv)
 {
@@ -37,6 +39,7 @@ int	main(int argc, char **argv)
 
 	argument_checker(argc, argv);
 	parsing(&data, argc, argv);
+	init_all(&data);
 	mutex_init(&data);
 	philo_init(&data);
 	for(int i = 0; i < data.number_of_philosophers; i++)

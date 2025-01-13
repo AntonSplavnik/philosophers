@@ -1,3 +1,11 @@
 unused functions:
 	ft_strncpy
 	ft_strcmp
+
+
+- start eating (take fork left and right)
+- philo.started_eating = gettimeofday()
+- philo.is_dead = 0
+
+
+observer thread
