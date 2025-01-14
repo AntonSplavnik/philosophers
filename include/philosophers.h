@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/13 19:01:01 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/14 19:13:23 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@
 
 typedef struct s_philos
 {
-	int	id;
-	int	is_dead;
-	int	has_eaten;
-	int	death_timer;
+	int		id;
+	int		is_dead;
+	int		has_eaten;
+	long	death_timer;
+	long	last_meal;
 
 	pthread_mutex_t *left_fork;
 	pthread_mutex_t *right_fork;
@@ -41,16 +42,21 @@ typedef struct s_data
 	int	time_to_sleep;
 	int	number_of_times_each_philosopher_must_eat;
 
-	t_philos *philos;
+	t_philos	*philos;
 
+	pthread_t	manager;
 	pthread_t	*threads;
+
+	pthread_mutex_t	print;
 	pthread_mutex_t	*forks;
 }	t_data;
 
+typedef	struct	timeval	Time;
 
 // main.c
 void	free_all(t_data *data);
-void	*routine(void *data);
+void	*routine(void *arg);
+void	*manager_routine(void *data);
 int		main(int argc, char **argv);
 
 //init
@@ -60,6 +66,11 @@ void	threads_init(t_data *data);
 void	thread_join(t_data *data);
 void	mutex_init(t_data *data);
 void	mutex_destroy(t_data *data);
+
+// helper_functions.c
+long	get_time(void);
+long	elapsed_time(long start, long end);
+void	custom_usleep(long	milliseconds);
 
 // parsing.c
 void	parsing(t_data *philo, int argc, char **argv);

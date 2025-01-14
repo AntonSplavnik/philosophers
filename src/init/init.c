@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:47:38 by asplavni          #+#    #+#             */
-/*   Updated: 2025/01/13 19:36:35 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/14 19:04:51 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	philo_init(t_data *data)
 		data->philos[i].id = i + 1;
 		data->philos[i].has_eaten = 0;
 		data->philos[i].is_dead = 0;
-		data->philos[i].death_timer =
+		data->philos[i].death_timer = get_time();
+		data->philos[i].last_meal = 0;
 
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1) % data->number_of_philosophers];
@@ -50,6 +51,11 @@ void	threads_init(t_data *data)
 	i = 0;
 	data->threads = malloc(data->number_of_philosophers * sizeof(pthread_t));
 	if (data->threads == NULL)
+	{
+		free_all(data);
+		exit (1);
+	}
+	if (pthread_create(&data->manager, NULL, &manager_routine, NULL) != 0)
 	{
 		free_all(data);
 		exit (1);
@@ -93,6 +99,11 @@ void	mutex_init(t_data *data)
 		free_all(data);
 		exit (1);
 	}
+	if (pthread_mutex_init(&data->print, NULL) != 0)
+	{
+		free_all(data);
+		exit (1);
+	}
 	while (i < data->number_of_philosophers)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
@@ -109,6 +120,11 @@ void	mutex_destroy(t_data *data)
 	int	i;
 
 	i = 0;
+	if (pthread_mutex_destroy(&data->print) != 0)
+	{
+		free_all(data);
+		exit (1);
+	}
 	while (i < data->number_of_philosophers)
 	{
 		if (pthread_mutex_destroy(&data->forks[i]) != 0)
