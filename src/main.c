@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 15:50:49 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/14 19:14:27 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/16 22:33:17 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,80 @@ void free_all(t_data *data)
 	free(data->threads);
 	free(data->forks);
 }
-void	*manager_routine(void *data)
+void	*manager_routine(void *arg)
 {
-	(void) data;
+	t_data	*data;
+	int	i;
+
+	i = 0;
+	data = (t_data *)arg;
+	while(data->philos_alive = 1)
+	{
+		if (i > data->number_of_philosophers)
+			i = 0;
+		if (get_time() - data->philos[i].timer_last_meal >= data->time_to_die)
+		{
+			pthread_mutex_unlock(&data->print_death);
+			printf ("died %d", data->philos[i]);
+			pthread_mutex_unlock(&data->print_death);
+			data->philos_alive = 0;
+			return (NULL);
+		}
+		i++;
+	}
 	return (NULL);
 }
 
-void	*routine(void *arg)
+void	take_left_fork(void)
 {
-	t_data *data = (t_data *)arg;
 
-	// mutex
-	for(int i = 0; i < data->number_of_philosophers; i++)
+}
+
+void	take_right_fork()
+{
+
+}
+
+void	take_forks(void)
+{
+	printf("thinking...\n");
+	while(1)
 	{
-		printf("")
+		take_left_fork();
+		take_right_fork();
 	}
+}
 
+void	eat(void)
+{
 	printf("eating...\n");
 	custom_usleep(1000);
-	// mutex + 1
+}
+
+void	sleep(void)
+{
 	printf("sleeping...\n");
 	custom_usleep(1000);
-	printf("thinking...\n");
-	custom_usleep(1000);
+}
+
+void	think(void)
+{
+
+}
+
+
+
+void	*philo_routine(void *arg)
+{
+	t_data	*data;
+
+	data = (t_data *)arg;
+	while(data->philos_alive = 1)
+	{
+		take_forks();
+		eat();
+		sleep();
+	}
 	return (NULL);
 }
 
