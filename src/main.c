@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 15:50:49 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/17 22:55:43 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/17 23:01:48 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,27 +45,30 @@ void	take_left_fork(t_philo *philo, int fork)
 {
 	int	left_fork_id;
 	int	right_fork_id;
-	int	fork;
+	int	fork_index;
 
 	left_fork_id = philo->id - 1;
 	right_fork_id = philo->id % philo->data->number_of_philosophers;
-	if (fork = 0)
-		fork = left_fork_id;
+	if (fork_index = 0)
+		fork_index = left_fork_id;
 	else
-		fork = right_fork_id;
+		fork_index = right_fork_id;
 	while (philo->data->philos_alive)
 	{
-		if (philo->data->fork_status[fork] == 0)
+		if (philo->data->fork_status[fork_index] == 0)
 			{
-				pthread_mutex_lock(&philo->data->mutex_forks[fork]);
+				pthread_mutex_lock(&philo->data->mutex_forks[fork_index]);
+
 				pthread_mutex_lock(&philo->data->mutex_print);
-				if (fork == 0)
+				if (fork_index == 0)
 					printf("%d %d has taken a left fork", get_time(), philo->id);
 				else
 					printf("%d %d has taken a right fork", get_time(), philo->id);
-				philo->data->fork_status[fork] = 1;
-				philo->data->philos->mutex_left_fork = &philo->data->mutex_forks[fork];
 				pthread_mutex_unlock(&philo->data->mutex_print);
+
+				philo->data->fork_status[fork_index] = 1;
+
+				philo->data->philos->mutex_left_fork = &philo->data->mutex_forks[fork_index];
 				break;
 			}
 	}
@@ -75,7 +78,7 @@ void	take_left_fork(t_philo *philo)
 {
 	int	left_fork_id;
 
-	left_fork_id = philo->id % philo->data->number_of_philosophers;
+	left_fork_id = philo->id - 1;
 	while (philo->data->philos_alive)
 	{
 		if (philo->data->fork_status[left_fork_id] == 0)
@@ -95,7 +98,7 @@ void	take_right_fork(t_philo *philo)
 {
 	int	right_fork_id;
 
-	right_fork_id = philo->id;
+	right_fork_id = philo->id % philo->data->number_of_philosophers;
 	while (philo->data->philos_alive)
 	{
 		if (philo->data->fork_status[right_fork_id] == 0)
@@ -111,15 +114,15 @@ void	take_right_fork(t_philo *philo)
 	}
 }
 
-void	take_forks(t_data *data)
+void	take_forks(t_philo *philo)
 {
-	pthread_mutex_lock(&data->mutex_print);
+	pthread_mutex_lock(&philo->data->mutex_print);
 	printf("thinking...\n");
-	pthread_mutex_unlock(&data->mutex_print);
+	pthread_mutex_unlock(&philo->data->mutex_print);
 	while(1)
 	{
-		take_left_fork(data);
-		take_right_fork(data);
+		take_left_fork(philo);
+		take_right_fork(philo);
 	}
 }
 
