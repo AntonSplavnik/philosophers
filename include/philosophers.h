@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/16 22:26:55 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/17 21:47:49 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,18 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-typedef struct s_philos
+typedef struct s_philo
 {
 	int		id;
-	int		is_dead;
 	int		has_eaten;
 	long	timer_start;
 	long	timer_last_meal;
 
-	pthread_mutex_t *left_fork;
-	pthread_mutex_t *right_fork;
-}	t_philos;
+	t_data	*data;
+
+	pthread_mutex_t *mutex_left_fork;
+	pthread_mutex_t *mutex_right_fork;
+}	t_philo;
 
 typedef struct s_data
 {
@@ -43,15 +44,15 @@ typedef struct s_data
 	int	number_of_times_each_philosopher_must_eat;
 
 	int	philos_alive;
+	int	*fork_status;
 
-	t_philos	*philos;
+	t_philo	*philos;
 
-	pthread_t	manager;
+	pthread_t	thread_manager;
 	pthread_t	*threads;
 
-	pthread_mutex_t	print;
-	pthread_mutex_t	print_death;
-	pthread_mutex_t	*forks;
+	pthread_mutex_t	mutex_print;
+	pthread_mutex_t	*mutex_forks;
 }	t_data;
 
 typedef	struct	timeval	Time;
