@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/18 18:28:22 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/18 20:36:22 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@
 # include <stdio.h>
 # include <pthread.h>
 # include <sys/time.h>
+
+typedef	struct	timeval	Time;
+typedef struct s_philo t_philo;
+typedef struct s_data t_data;
 
 typedef struct s_philo
 {
@@ -56,7 +60,6 @@ typedef struct s_data
 	pthread_mutex_t	*mutex_forks;
 }	t_data;
 
-typedef	struct	timeval	Time;
 
 // main.c
 void	free_all(t_data *data);
@@ -81,10 +84,10 @@ void	custom_usleep(long	milliseconds);
 void	parsing(t_data *philo, int argc, char **argv);
 
 // input_validation.c
-void	argument_checker(int argc, char **argv);
-int		input_restrictions_helper(char *input_str, int i);
-int		input_restrictions(char *input_str);
-int		limits(long number);
+void	validate_arguments(int argc, char **argv);
+int		validate_characters(char *input_str, int i);
+int		validate_input_string(char *input_str);
+int		validate_number_limits(long number);
 
 // utils
 void	ft_putstr(char *str);

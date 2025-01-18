@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*   input_validation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
+/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:11:22 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/04 17:03:48 by antonsplavn      ###   ########.fr       */
+/*   Updated: 2025/01/18 20:35:28 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	argument_checker(int argc, char **argv)
+void	validate_arguments(int argc, char **argv)
 {
 	int	i;
 
@@ -39,7 +39,7 @@ void	argument_checker(int argc, char **argv)
 	}
 }
 
-int	input_restrictions_helper(char *input_str, int i)
+int	validate_characters(char *input_str, int i)
 {
 	if (input_str[i] == ' ')
 	{
@@ -54,7 +54,7 @@ int	input_restrictions_helper(char *input_str, int i)
 	return (0);
 }
 
-int	input_restrictions(char *input_str)
+int	validate_input_string(char *input_str)
 {
 	int	i;
 
@@ -72,14 +72,14 @@ int	input_restrictions(char *input_str)
 	}
 	while (input_str[i])
 	{
-		if (input_restrictions_helper(input_str, i) == 1)
+		if (validate_characters(input_str, i) == 1)
 			exit (1);
 		i++;
 	}
 	return (0);
 }
 
-int	limits(long number)
+int	validate_number_limits(long number)
 {
 	if (number > INT_MAX || number < INT_MIN)
 	{

@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:47:38 by asplavni          #+#    #+#             */
-/*   Updated: 2025/01/18 17:38:04 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/18 20:26:47 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	data_init(t_data *data)
 	int	i;
 
 	i = 0;
-	data->fork_status = mallock(data->number_of_philosophers * sizeof(int));
+	data->fork_status = malloc(data->number_of_philosophers * sizeof(int));
 	if (data->fork_status == NULL)
-		return (NULL);
+		exit (1);
 	while (i < data->number_of_philosophers)
 		data->fork_status[i] = 0;
 	data->philos_alive = 1;
@@ -46,7 +46,8 @@ void	philo_init(t_data *data)
 		data->philos[i].timer_start = get_time();
 		data->philos[i].timer_last_meal = get_time();
 		data->philos[i].mutex_left_fork = &data->mutex_forks[i];
-		data->philos[i].mutex_right_fork = &data->mutex_forks[(i + 1) % data->number_of_philosophers];
+		data->philos[i].mutex_right_fork = &data->mutex_forks[(i + 1) \
+											% data->number_of_philosophers];
 		i++;
 	}
 }

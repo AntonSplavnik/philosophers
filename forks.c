@@ -6,12 +6,11 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 17:11:41 by asplavni          #+#    #+#             */
-/*   Updated: 2025/01/18 17:18:27 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/18 18:48:47 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
-
+/*
 void	take_forks(t_philo *philo, int flag)
 {
 	int	left_fork;
@@ -51,4 +50,4 @@ void	take_forks(t_philo	*philo)
 		take_forks(philo, 0);
 		take_forks(philo, 1);
 	}
-}
+} */
