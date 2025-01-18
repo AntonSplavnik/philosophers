@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:47:38 by asplavni          #+#    #+#             */
-/*   Updated: 2025/01/17 22:59:09 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/18 17:38:04 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,11 @@ void	mutex_init(t_data *data)
 	i = 0;
 	data->mutex_forks = malloc(data->number_of_philosophers *sizeof(pthread_mutex_t));
 	if (data->mutex_forks == NULL)
+	{
+		free_all(data);
+		exit (1);
+	}
+	if (pthread_mutex_init(&data->mutex_timer, NULL) != 0)
 	{
 		free_all(data);
 		exit (1);

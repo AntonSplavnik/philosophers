@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/17 21:47:49 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/18 18:28:22 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,33 +24,34 @@
 
 typedef struct s_philo
 {
-	int		id;
-	int		has_eaten;
-	long	timer_start;
-	long	timer_last_meal;
+	int				id;
+	int				has_eaten;
+	long			timer_start;
+	long			timer_last_meal;
 
-	t_data	*data;
+	t_data			*data;
 
-	pthread_mutex_t *mutex_left_fork;
-	pthread_mutex_t *mutex_right_fork;
+	pthread_mutex_t	*mutex_left_fork;
+	pthread_mutex_t	*mutex_right_fork;
 }	t_philo;
 
 typedef struct s_data
 {
-	int	number_of_philosophers;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	number_of_times_each_philosopher_must_eat;
+	int				number_of_philosophers;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				number_of_times_each_philosopher_must_eat;
 
-	int	philos_alive;
-	int	*fork_status;
+	int				philos_alive;
+	int				*fork_status;
 
-	t_philo	*philos;
+	t_philo			*philos;
 
-	pthread_t	thread_manager;
-	pthread_t	*threads;
+	pthread_t		thread_manager;
+	pthread_t		*threads;
 
+	pthread_mutex_t	mutex_timer;
 	pthread_mutex_t	mutex_print;
 	pthread_mutex_t	*mutex_forks;
 }	t_data;
@@ -63,7 +64,7 @@ void	*philo_routine(void *arg);
 void	*manager_routine(void *data);
 int		main(int argc, char **argv);
 
-//init
+// init
 void	data_init(t_data *data);
 void	philo_init(t_data *data);
 void	threads_init(t_data *data);
@@ -71,7 +72,7 @@ void	thread_join(t_data *data);
 void	mutex_init(t_data *data);
 void	mutex_destroy(t_data *data);
 
-// helper_functions.c
+// time.c
 long	get_time(void);
 long	elapsed_time(long start, long end);
 void	custom_usleep(long	milliseconds);
@@ -79,7 +80,7 @@ void	custom_usleep(long	milliseconds);
 // parsing.c
 void	parsing(t_data *philo, int argc, char **argv);
 
-// parsing_utils.c
+// input_validation.c
 void	argument_checker(int argc, char **argv);
 int		input_restrictions_helper(char *input_str, int i);
 int		input_restrictions(char *input_str);
@@ -92,8 +93,6 @@ void	*ft_calloc(size_t num, size_t size);
 int		ft_atoi(char *input_str);
 char	*ft_strncpy(char *dest, const char *src, size_t n);
 int		ft_strcmp(char *input1, char *input2);
-
-// utils 2
 
 // ft_split
 char	**ft_split(char *input, char c);
