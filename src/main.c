@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 15:50:49 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/20 22:08:21 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/20 22:17:43 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,7 @@
 	free(data->mutex_forks);
 } */
 
-void free_data(t_data *data)
-{
-	free(data->fork_status);
-	free(data->philos);
-	free(data->threads);
-	free(data->mutex_forks);
-}
-
-int	take_left_fork(t_philo *philo)
+/* int	take_left_fork(t_philo *philo)
 {
 	int	left_fork_id;
 
@@ -89,7 +81,23 @@ int	take_right_fork(t_philo *philo)
 	}
 
 	return (0);
-}
+} */
+
+/* int	take_forks(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->mutex_print);
+	printf("%ld %d thinking\n", elapsed_time(philo->timer_start, get_time()), philo->id);
+	pthread_mutex_unlock(&philo->data->mutex_print);
+	while(philo->data->philos_alive)
+	{
+		if (take_left_fork(philo))
+			return (1);
+		if (take_right_fork(philo))
+			return (1);
+		break;
+	}
+	return (0);
+} */
 
 /* void take_forks(t_philo *philo)
 {
@@ -180,6 +188,68 @@ int	take_right_fork(t_philo *philo)
     }
 } */
 
+void free_data(t_data *data)
+{
+	free(data->fork_status);
+	free(data->philos);
+	free(data->threads);
+	free(data->mutex_forks);
+}
+
+int	take_left_fork(t_philo *philo)
+{
+	int	left_fork_id;
+
+	left_fork_id = philo->id - 1;
+	while (philo->data->philos_alive)
+	{
+		pthread_mutex_lock(philo->mutex_left_fork);
+		if (philo->data->fork_status[left_fork_id] == 0)
+		{
+			// pthread_mutex_lock(philo->mutex_left_fork);
+			philo->data->fork_status[left_fork_id] = 1;
+			pthread_mutex_lock(&philo->data->mutex_print);
+			printf("%ld %d has taken a left fork\n", elapsed_time(philo->timer_start, get_time()), philo->id);
+			pthread_mutex_unlock(&philo->data->mutex_print);
+			return (0);
+		}
+		pthread_mutex_unlock(philo->mutex_left_fork);
+		// usleep(100);
+	}
+	return (1);
+}
+
+int	take_right_fork(t_philo *philo)
+{
+	int	right_fork_id;
+
+	right_fork_id = philo->id % philo->data->number_of_philosophers;
+
+
+	while (philo->data->philos_alive)
+	{
+		pthread_mutex_lock(philo->mutex_right_fork);
+		if (philo->data->fork_status[right_fork_id] == 0)
+		{
+			// pthread_mutex_lock(philo->mutex_right_fork);
+			philo->data->fork_status[right_fork_id] = 1;
+			pthread_mutex_lock(&philo->data->mutex_print);
+			printf("%ld %d has taken a right fork\n", elapsed_time(philo->timer_start, get_time()), philo->id);
+			pthread_mutex_unlock(&philo->data->mutex_print);
+			return (0);
+		}
+		pthread_mutex_unlock(philo->mutex_right_fork);
+		// usleep(100);
+	}
+	/* if (philo->data->philos_alive)
+	{
+		pthread_mutex_unlock(philo->mutex_left_fork);
+		philo->data->fork_status[right_fork_id - 1] = 0;
+	} */
+
+	return (0);
+}
+
 int take_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->mutex_print);
@@ -203,21 +273,6 @@ int take_forks(t_philo *philo)
 	return 0;
 }
 
-/* int	take_forks(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->mutex_print);
-	printf("%ld %d thinking\n", elapsed_time(philo->timer_start, get_time()), philo->id);
-	pthread_mutex_unlock(&philo->data->mutex_print);
-	while(philo->data->philos_alive)
-	{
-		if (take_left_fork(philo))
-			return (1);
-		if (take_right_fork(philo))
-			return (1);
-		break;
-	}
-	return (0);
-} */
 
 int	eat(t_philo *philo)
 {
