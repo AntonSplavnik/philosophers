@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
+/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/18 22:49:57 by antonsplavn      ###   ########.fr       */
+/*   Updated: 2025/01/20 17:06:47 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_data
 	pthread_t		thread_manager;
 	pthread_t		*threads;
 
+	pthread_mutex_t	mutex_is_alive;
 	pthread_mutex_t	mutex_timer;
 	pthread_mutex_t	mutex_print;
 	pthread_mutex_t	*mutex_forks;
