@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:47:38 by asplavni          #+#    #+#             */
-/*   Updated: 2025/01/20 20:03:55 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/20 21:45:30 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	threads_init(t_data *data)
 		if (pthread_create(&data->threads[i], NULL, &philo_routine, (void *)&data->philos[i]) != 0)
 		{
 			free_data(data);
+			/* custom_usleep(1); */
 			exit (1);
 		}
 		i++;

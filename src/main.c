@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 15:50:49 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/20 20:06:40 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/20 22:08:21 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,8 @@ int	take_left_fork(t_philo *philo)
 	int	left_fork_id;
 
 	left_fork_id = philo->id - 1;
-	while (1)
+	while (philo->data->philos_alive)
 	{
-		if (!philo->data->philos_alive)
-			return (1);
 		if (philo->data->fork_status[left_fork_id] == 0)
 		{
 			pthread_mutex_lock(philo->mutex_left_fork);
@@ -59,7 +57,7 @@ int	take_left_fork(t_philo *philo)
 			pthread_mutex_unlock(&philo->data->mutex_print);
 			return (0);
 		}
-		custom_usleep(1);
+		// usleep(100);
 	}
 	return (1);
 }
@@ -71,10 +69,8 @@ int	take_right_fork(t_philo *philo)
 	right_fork_id = philo->id % philo->data->number_of_philosophers;
 
 
-	while (1)
+	while (philo->data->philos_alive)
 	{
-		if (!philo->data->philos_alive)
-			return (1);
 		if (philo->data->fork_status[right_fork_id] == 0)
 		{
 			pthread_mutex_lock(philo->mutex_right_fork);
@@ -84,7 +80,7 @@ int	take_right_fork(t_philo *philo)
 			pthread_mutex_unlock(&philo->data->mutex_print);
 			return (0);
 		}
-		custom_usleep(1);
+		// usleep(100);
 	}
 	if (philo->data->philos_alive)
 	{
@@ -184,11 +180,33 @@ int	take_right_fork(t_philo *philo)
     }
 } */
 
-
-int	take_forks(t_philo *philo)
+int take_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->mutex_print);
 	printf("%ld %d is thinking\n", elapsed_time(philo->timer_start, get_time()), philo->id);
+	pthread_mutex_unlock(&philo->data->mutex_print);
+
+	if (philo->id % 2 == 0) // Even philosophers take right fork first
+	{
+		if (take_right_fork(philo) || take_left_fork(philo))
+		{
+			return 1; // Error occurred, return immediately
+		}
+	}
+	else // Odd philosophers take left fork first
+	{
+		if (take_left_fork(philo) || take_right_fork(philo))
+		{
+			return 1; // Error occurred, return immediately
+		}
+	}
+	return 0;
+}
+
+/* int	take_forks(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->mutex_print);
+	printf("%ld %d thinking\n", elapsed_time(philo->timer_start, get_time()), philo->id);
 	pthread_mutex_unlock(&philo->data->mutex_print);
 	while(philo->data->philos_alive)
 	{
@@ -199,7 +217,7 @@ int	take_forks(t_philo *philo)
 		break;
 	}
 	return (0);
-}
+} */
 
 int	eat(t_philo *philo)
 {
@@ -213,14 +231,19 @@ int	eat(t_philo *philo)
 		if (!philo->data->philos_alive)
 			return (1);
 		philo->timer_last_meal = get_time();
+
 		pthread_mutex_lock(&philo->data->mutex_print);
-		printf("%ld %d is eating\n", elapsed_time(philo->timer_start, get_time()), philo->id);
+		printf("%ld %d eating\n", elapsed_time(philo->timer_start, get_time()), philo->id);
 		pthread_mutex_unlock(&philo->data->mutex_print);
+
 		custom_usleep(philo->data->time_to_eat);
-		pthread_mutex_unlock(philo->mutex_left_fork);
+
 		philo->data->fork_status[left_fork_id] = 0;
-		pthread_mutex_unlock(philo->mutex_right_fork);
+		pthread_mutex_unlock(philo->mutex_left_fork);
+
 		philo->data->fork_status[right_fork_id] = 0;
+		pthread_mutex_unlock(philo->mutex_right_fork);
+
 		philo->has_eaten++;
 	}
 	return (0);
@@ -233,7 +256,7 @@ int	p_sleep(t_philo *philo)
 		if (!philo->data->philos_alive)
 			return (1);
 		pthread_mutex_lock(&philo->data->mutex_print);
-		printf("%ld %d is sleeping\n", elapsed_time(philo->timer_start, get_time()), philo->id);
+		printf("%ld %d sleeping\n", elapsed_time(philo->timer_start, get_time()), philo->id);
 		pthread_mutex_unlock(&philo->data->mutex_print);
 		custom_usleep(philo->data->time_to_sleep);
 	}
@@ -274,18 +297,19 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-/* 	if (philo->id % 2 == 0)
-		custom_usleep(1); */
-	while(1)
+	if (philo->id % 2 == 0)
+		usleep(1000);
+	while(philo->data->philos_alive)
 	{
-		if(!philo->data->philos_alive)
-			return (NULL);
 		if (take_forks(philo))
-			return (NULL);
+			break;
 		if (eat(philo))
-			return (NULL);
+			break;
 		if (p_sleep(philo))
-			return (NULL);
+			break;
+		pthread_mutex_lock(&philo->data->mutex_print);
+		printf("%ld %d is thinking\n", elapsed_time(philo->timer_start, get_time()), philo->id);
+		pthread_mutex_unlock(&philo->data->mutex_print);
 	}
 	return (NULL);
 }
