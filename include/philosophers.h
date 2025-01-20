@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/18 20:36:22 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/18 22:49:57 by antonsplavn      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ typedef struct s_data
 
 
 // main.c
-void	free_all(t_data *data);
+void	cleanup_data(t_data *data);
+void	free_data(t_data *data);
 void	*philo_routine(void *arg);
 void	*manager_routine(void *data);
 int		main(int argc, char **argv);

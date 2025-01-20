@@ -3,22 +3,21 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+         #
+#    By: parallels <parallels@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/30 22:22:02 by antonsplavn       #+#    #+#              #
-#    Updated: 2024/12/04 21:03:50 by asplavni         ###   ########.fr        #
+#    Updated: 2025/01/19 01:14:53 by parallels        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Compiler and Flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I include
+CFLAGS = -Wall -Wextra -Werror -I include -g
 
 # Directories
 SRC_DIR = src
 OBJ_DIR = obj
 INC_DIR = include
-
 
 # Subdirectories inside src
 UTILS_DIR = $(SRC_DIR)/utils
@@ -29,20 +28,32 @@ INIT_DIR = $(SRC_DIR)/init
 SRCS = $(wildcard $(SRC_DIR)/*.c) \
        $(wildcard $(UTILS_DIR)/*.c) \
        $(wildcard $(PARSING_DIR)/*.c)\
-	   $(wildcard $(INIT_DIR)/*.c)
+       $(wildcard $(INIT_DIR)/*.c)
 
 # Object Files (output in obj/)
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, \
-	   $(patsubst $(UTILS_DIR)/%.c, $(OBJ_DIR)/%.o, \
-	   $(patsubst $(PARSING_DIR)/%.c, $(OBJ_DIR)/%.o, \
-	   $(patsubst $(INIT_DIR)/%.c, $(OBJ_DIR)/%.o, \
-	   $(SRCS)))))
+       $(patsubst $(UTILS_DIR)/%.c, $(OBJ_DIR)/%.o, \
+       $(patsubst $(PARSING_DIR)/%.c, $(OBJ_DIR)/%.o, \
+       $(patsubst $(INIT_DIR)/%.c, $(OBJ_DIR)/%.o, \
+       $(SRCS)))))
 
 # Output Binary Name
-NAME = philosophers
+NAME = philo
 
-# Default Rule
+# Default Rule (No Sanitizer)
 all: $(NAME)
+
+# Build with AddressSanitizer
+asan: CFLAGS += -fsanitize=address
+asan: $(NAME)
+
+# Build with ThreadSanitizer
+tsan: CFLAGS += -fsanitize=thread
+tsan: $(NAME)
+
+# Build with MemorySanitizer
+msan: CFLAGS += -fsanitize=memory
+msan: $(NAME)
 
 # Linking the Binary
 $(NAME): $(OBJS)

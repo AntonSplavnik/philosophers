@@ -2,10 +2,4 @@ unused functions:
 	ft_strncpy
 	ft_strcmp
 
-
-- start eating (take fork left and right)
-- philo.started_eating = gettimeofday()
-- philo.is_dead = 0
-
-
-observer thread
+1. sugestion to use mutex on philo_is_alive and check for it inside an infinit loop.
