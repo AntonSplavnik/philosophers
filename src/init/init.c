@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:47:38 by asplavni          #+#    #+#             */
-/*   Updated: 2025/01/20 21:45:30 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/21 20:58:03 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	mutex_init(t_data *data)
 		free_data(data);
 		exit (1);
 	}
-	if (pthread_mutex_init(&data->mutex_timer, NULL) != 0)
+	if (pthread_mutex_init(&data->mutex_status, NULL) != 0)
 	{
 		free_data(data);
 		exit (1);
