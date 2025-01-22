@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/21 20:58:13 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/22 21:54:42 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_data
 	pthread_t		thread_manager;
 	pthread_t		*threads;
 
+	pthread_mutex_t	mutex_last_meal;
 	pthread_mutex_t	mutex_is_alive;
 	pthread_mutex_t	mutex_status;
 	pthread_mutex_t	mutex_print;
