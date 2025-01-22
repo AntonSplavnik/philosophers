@@ -6,195 +6,11 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 15:50:49 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/22 23:20:28 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/22 23:31:31 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-/* void	cleanup_data(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while(i < data->number_of_philosophers)
-	{
-		if (data->fork_status[i] == 1)
-			pthread_mutex_unlock(&data->mutex_forks[i]);
-		pthread_mutex_destroy(&data->mutex_forks[i]);
-		i++;
-	}
-	pthread_mutex_destroy(&data->mutex_print);
-	pthread_mutex_destroy(&data->mutex_timer);
-
-	free(data->fork_status);
-	free(data->philos);
-	free(data->threads);
-	free(data->mutex_forks);
-} */
-
-/* int	take_left_fork(t_philo *philo)
-{
-	int	left_fork_id;
-
-	left_fork_id = philo->id - 1;
-	while (philo->data->philos_alive)
-	{
-		if (philo->data->fork_status[left_fork_id] == 0)
-		{
-			pthread_mutex_lock(philo->mutex_left_fork);
-			philo->data->fork_status[left_fork_id] = 1;
-			pthread_mutex_lock(&philo->data->mutex_print);
-			printf("%ld %d has taken a left fork\n", elapsed_time(philo->timer_start, get_time()), philo->id);
-			pthread_mutex_unlock(&philo->data->mutex_print);
-			return (0);
-		}
-		// usleep(100);
-	}
-	return (1);
-}
-
-int	take_right_fork(t_philo *philo)
-{
-	int	right_fork_id;
-
-	right_fork_id = philo->id % philo->data->number_of_philosophers;
-
-
-	while (philo->data->philos_alive)
-	{
-		if (philo->data->fork_status[right_fork_id] == 0)
-		{
-			pthread_mutex_lock(philo->mutex_right_fork);
-			philo->data->fork_status[right_fork_id] = 1;
-			pthread_mutex_lock(&philo->data->mutex_print);
-			printf("%ld %d has taken a right fork\n", elapsed_time(philo->timer_start, get_time()), philo->id);
-			pthread_mutex_unlock(&philo->data->mutex_print);
-			return (0);
-		}
-		// usleep(100);
-	}
-	if (philo->data->philos_alive)
-	{
-		pthread_mutex_unlock(philo->mutex_left_fork);
-		philo->data->fork_status[right_fork_id - 1] = 0;
-	}
-
-	return (0);
-} */
-
-/* int take_forks(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->mutex_print);
-	printf("%ld %d is thinking\n", elapsed_time(philo->timer_start, get_time()), philo->id);
-	pthread_mutex_unlock(&philo->data->mutex_print);
-
-	if (philo->id % 2 == 0) // Even philosophers take right fork first
-	{
-		if (take_right_fork(philo) || take_left_fork(philo))
-		{
-			return 1; // Error occurred, return immediately
-		}
-	}
-	else // Odd philosophers take left fork first
-	{
-		if (take_left_fork(philo) || take_right_fork(philo))
-		{
-			return 1; // Error occurred, return immediately
-		}
-	}
-	return 0;
-} */
-
-
-/* void take_forks(t_philo *philo)
-{
-    int left_fork_id = philo->id - 1;
-    int right_fork_id = philo->id % philo->data->number_of_philosophers;
-
-	if (!philo->data->philos_alive)
-					return ;
-
-    pthread_mutex_lock(&philo->data->mutex_print);
-    printf("%ld %d is thinking\n", elapsed_time(philo->timer_start, get_time()), philo->id);
-    pthread_mutex_unlock(&philo->data->mutex_print);
-
-    while (philo->data->philos_alive)
-	{
-        // Try to take the forks in a specific order
-        if (philo->id % 2 == 0)
-		{ // Even philosophers take left fork first
-            if (pthread_mutex_lock(&philo->data->mutex_forks[left_fork_id]) == 0)
-			{
-                philo->data->fork_status[left_fork_id] = 1;
-
-				if (!philo->data->philos_alive)
-				{
-					pthread_mutex_unlock(&philo->data->mutex_forks[left_fork_id]);
-					return ;
-				}
-                pthread_mutex_lock(&philo->data->mutex_print);
-                printf("%ld %d has taken a left fork\n", elapsed_time(philo->timer_start, get_time()), philo->id);
-                pthread_mutex_unlock(&philo->data->mutex_print);
-
-                if (pthread_mutex_lock(&philo->data->mutex_forks[right_fork_id]) == 0)
-				{
-
-					if (!philo->data->philos_alive)
-					{
-						pthread_mutex_unlock(&philo->data->mutex_forks[right_fork_id]);
-						return ;
-					}
-
-                    philo->data->fork_status[right_fork_id] = 1;
-
-                    pthread_mutex_lock(&philo->data->mutex_print);
-                    printf("%ld %d has taken a right fork\n", elapsed_time(philo->timer_start, get_time()), philo->id);
-                    pthread_mutex_unlock(&philo->data->mutex_print);
-
-                    return; // Successfully took both forks
-                }
-
-                // Release left fork if right fork cannot be taken
-                pthread_mutex_unlock(&philo->data->mutex_forks[left_fork_id]);
-                philo->data->fork_status[left_fork_id] = 0;
-            }
-        }
-		else
-		{ // Odd philosophers take right fork first
-            if (pthread_mutex_lock(&philo->data->mutex_forks[right_fork_id]) == 0)
-			{
-                philo->data->fork_status[right_fork_id] = 1;
-				if (!philo->data->philos_alive)
-				{
-					pthread_mutex_unlock(&philo->data->mutex_forks[right_fork_id]);
-					return ;
-				}
-
-                pthread_mutex_lock(&philo->data->mutex_print);
-                printf("%ld %d has taken a right fork\n", elapsed_time(philo->timer_start, get_time()), philo->id);
-                pthread_mutex_unlock(&philo->data->mutex_print);
-
-                if (pthread_mutex_lock(&philo->data->mutex_forks[left_fork_id]) == 0)
-				{
-                    philo->data->fork_status[left_fork_id] = 1;
-
-                    pthread_mutex_lock(&philo->data->mutex_print);
-                    printf("%ld %d has taken a left fork\n", elapsed_time(philo->timer_start, get_time()), philo->id);
-                    pthread_mutex_unlock(&philo->data->mutex_print);
-
-                    return; // Successfully took both forks
-                }
-
-                // Release right fork if left fork cannot be taken
-                pthread_mutex_unlock(&philo->data->mutex_forks[right_fork_id]);
-                philo->data->fork_status[right_fork_id] = 0;
-            }
-        }
-
-        custom_usleep(1); // Small delay to prevent busy waiting
-    }
-} */
 
 void free_data(t_data *data)
 {
@@ -290,19 +106,22 @@ int	take_right_fork(t_philo *philo)
 
 int take_forks(t_philo *philo)
 {
-    pthread_mutex_lock(&philo->data->mutex_print);
-    printf("%ld %d is thinking\n", elapsed_time(philo->timer_start, get_time()), philo->id);
-    pthread_mutex_unlock(&philo->data->mutex_print);
+	pthread_mutex_lock(&philo->data->mutex_print);
+	printf("%ld %d is thinking\n", elapsed_time(philo->timer_start, get_time()), philo->id);
+	pthread_mutex_unlock(&philo->data->mutex_print);
 
-    if (philo->id % 2 == 0) { // Even philosophers lock right fork first
-        if (take_right_fork(philo) || take_left_fork(philo))
-            return 1;
-    } else { // Odd philosophers lock left fork first
-        if (take_left_fork(philo) || take_right_fork(philo))
-            return 1;
-    }
+	if (philo->id % 2 == 0)
+	{
+		if (take_right_fork(philo) || take_left_fork(philo))
+			return (1);
+	}
+	else
+	{
+		if (take_left_fork(philo) || take_right_fork(philo))
+			return (1);
+	}
 
-    return 0;
+	return (0);
 }
 
 /* int	take_forks(t_philo *philo)
@@ -454,7 +273,6 @@ void	*philo_routine(void *arg)
 			break;
 
 	}
-
 	return (NULL);
 }
 
