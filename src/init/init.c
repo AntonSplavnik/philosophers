@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:47:38 by asplavni          #+#    #+#             */
-/*   Updated: 2025/01/21 20:58:03 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/22 19:14:25 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	threads_init(t_data *data)
 		if (pthread_create(&data->threads[i], NULL, &philo_routine, (void *)&data->philos[i]) != 0)
 		{
 			free_data(data);
-			/* custom_usleep(1); */
+			// usleep(10);
 			exit (1);
 		}
 		i++;
@@ -89,13 +89,11 @@ void	thread_join(t_data *data)
 	int	i;
 
 	i = 0;
+	pthread_join(data->thread_manager, NULL);
+
 	while (i < data->number_of_philosophers)
 	{
-		if (pthread_join(data->threads[i], NULL) != 0)
-		{
-			free_data(data);
-			exit (1);
-		}
+		pthread_join(data->threads[i], NULL);
 		i++;
 	}
 }
@@ -107,6 +105,11 @@ void	mutex_init(t_data *data)
 	i = 0;
 	data->mutex_forks = malloc(data->number_of_philosophers *sizeof(pthread_mutex_t));
 	if (data->mutex_forks == NULL)
+	{
+		free_data(data);
+		exit (1);
+	}
+	if (pthread_mutex_init(&data->mutex_is_alive, NULL) != 0)
 	{
 		free_data(data);
 		exit (1);
@@ -138,11 +141,10 @@ void	mutex_destroy(t_data *data)
 	int	i;
 
 	i = 0;
-	if (pthread_mutex_destroy(&data->mutex_print) != 0)
-	{
-		free_data(data);
-		exit (1);
-	}
+	pthread_mutex_destroy(&data->mutex_print);
+	pthread_mutex_destroy(&data->mutex_is_alive);
+	pthread_mutex_destroy(&data->mutex_status);
+
 	while (i < data->number_of_philosophers)
 	{
 		if (pthread_mutex_destroy(&data->mutex_forks[i]) != 0)

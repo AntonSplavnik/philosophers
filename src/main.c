@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 15:50:49 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/21 22:33:13 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/22 20:54:43 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,9 +199,9 @@ int	take_right_fork(t_philo *philo)
 void free_data(t_data *data)
 {
 	free(data->fork_status);
+	free(data->mutex_forks);
 	free(data->philos);
 	free(data->threads);
-	free(data->mutex_forks);
 }
 
 int	take_left_fork(t_philo *philo)
@@ -209,42 +209,35 @@ int	take_left_fork(t_philo *philo)
 	int	left_fork_id;
 
 	left_fork_id = philo->id - 1;
-	while (philo->data->philos_alive)
+
+	while (1)
 	{
+		pthread_mutex_lock(&philo->data->mutex_is_alive);
+		if (!philo->data->philos_alive)
+		{
+			pthread_mutex_unlock(&philo->data->mutex_is_alive);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->data->mutex_is_alive);
+
 		pthread_mutex_lock(&philo->data->mutex_status);
 		if (philo->data->fork_status[left_fork_id] == 0)
 		{
 			philo->data->fork_status[left_fork_id] = 1;
 			pthread_mutex_unlock(&philo->data->mutex_status);
+			// usleep(10);
 
 			pthread_mutex_lock(philo->mutex_left_fork);
 
 			pthread_mutex_lock(&philo->data->mutex_print);
 			printf("%ld %d has taken a left fork\n", elapsed_time(philo->timer_start, get_time()), philo->id);
 			pthread_mutex_unlock(&philo->data->mutex_print);
+
 			return (0);
 		}
 		pthread_mutex_unlock(&philo->data->mutex_status);
 		// usleep(100);
 	}
-
-	pthread_mutex_lock(&philo->data->mutex_is_alive);
-	if (!philo->data->philos_alive)
-	{
-		pthread_mutex_unlock(&philo->data->mutex_is_alive);
-
-		if (philo->data->fork_status[left_fork_id] == 1)
-		{
-			pthread_mutex_lock(&philo->data->mutex_status);
-			philo->data->fork_status[left_fork_id] = 0;
-			pthread_mutex_unlock(&philo->data->mutex_status);
-		}
-
-		pthread_mutex_unlock(philo->mutex_left_fork);
-		return (1);
-	}
-	pthread_mutex_unlock(&philo->data->mutex_is_alive);
-
 
 	return (1);
 }
@@ -255,14 +248,22 @@ int	take_right_fork(t_philo *philo)
 
 	right_fork_id = philo->id % philo->data->number_of_philosophers;
 
-
-	while (philo->data->philos_alive)
+	while (1)
 	{
+		pthread_mutex_lock(&philo->data->mutex_is_alive);
+		if (!philo->data->philos_alive)
+		{
+			pthread_mutex_unlock(&philo->data->mutex_is_alive);
+			break;
+		}
+		pthread_mutex_unlock(&philo->data->mutex_is_alive);
+
 		pthread_mutex_lock(&philo->data->mutex_status);
 		if (philo->data->fork_status[right_fork_id] == 0)
 		{
 			philo->data->fork_status[right_fork_id] = 1;
 			pthread_mutex_unlock(&philo->data->mutex_status);
+			// usleep(10);
 
 			pthread_mutex_lock(philo->mutex_right_fork);
 
@@ -275,15 +276,15 @@ int	take_right_fork(t_philo *philo)
 		pthread_mutex_unlock(&philo->data->mutex_status);
 		// usleep(100);
 	}
-	if (!philo->data->philos_alive)
-	{
-		pthread_mutex_lock(&philo->data->mutex_status);
-		if (philo->data->fork_status[right_fork_id] == 1)
-			philo->data->fork_status[right_fork_id - 1] = 0;
-		pthread_mutex_unlock(&philo->data->mutex_status);
 
-		pthread_mutex_unlock(philo->mutex_left_fork);
-	}
+
+	pthread_mutex_lock(&philo->data->mutex_status);
+	if (philo->data->fork_status[right_fork_id] == 1)
+		philo->data->fork_status[right_fork_id - 1] = 0;
+	pthread_mutex_unlock(&philo->data->mutex_status);
+	// usleep(10);
+
+	pthread_mutex_unlock(philo->mutex_left_fork);
 
 	return (1);
 }
@@ -291,11 +292,11 @@ int	take_right_fork(t_philo *philo)
 int	take_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->mutex_print);
-	printf("%ld %d thinking\n", elapsed_time(philo->timer_start, get_time()), philo->id);
+	printf("%ld %d is thinking\n", elapsed_time(philo->timer_start, get_time()), philo->id);
 	pthread_mutex_unlock(&philo->data->mutex_print);
 
 	if (philo->id % 2 == 0)
-		usleep(100);
+		usleep(500);
 	while(philo->data->philos_alive)
 	{
 		if (take_left_fork(philo))
@@ -322,11 +323,13 @@ int	eat(t_philo *philo)
 		pthread_mutex_unlock(&philo->data->mutex_is_alive);
 		return (1);
 	}
+	pthread_mutex_unlock(&philo->data->mutex_is_alive);
+
 
 	philo->timer_last_meal = get_time();
 
 	pthread_mutex_lock(&philo->data->mutex_print);
-	printf("%ld %d eating\n", elapsed_time(philo->timer_start, get_time()), philo->id);
+	printf("%ld %d is eating\n", elapsed_time(philo->timer_start, get_time()), philo->id);
 	pthread_mutex_unlock(&philo->data->mutex_print);
 
 	custom_usleep(philo->data->time_to_eat);
@@ -357,7 +360,7 @@ int	p_sleep(t_philo *philo)
 			return (1);
 
 		pthread_mutex_lock(&philo->data->mutex_print);
-		printf("%ld %d sleeping\n", elapsed_time(philo->timer_start, get_time()), philo->id);
+		printf("%ld %d is sleeping\n", elapsed_time(philo->timer_start, get_time()), philo->id);
 		pthread_mutex_unlock(&philo->data->mutex_print);
 
 		custom_usleep(philo->data->time_to_sleep);
@@ -377,13 +380,14 @@ void	*manager_routine(void *arg)
 
 		if (i >= data->number_of_philosophers)
 			i = 0;
+
 		pthread_mutex_lock(&data->mutex_is_alive);
-		if (get_time() - data->philos[i].timer_last_meal >= data->time_to_die)
+		if (get_time() - data->philos[i].timer_last_meal > data->time_to_die)
 		{
 			data->philos_alive = 0;
 			pthread_mutex_unlock(&data->mutex_is_alive);
 
-			// custom_usleep(1);
+			custom_usleep(1);
 			pthread_mutex_lock(&data->mutex_print);
 			printf ("%ld %d died\n",elapsed_time(data->philos[i].timer_start, get_time()), data->philos[i].id);
 			pthread_mutex_unlock(&data->mutex_print);
@@ -403,7 +407,7 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
-		usleep(10);
+		usleep(200);
 	while(philo->data->philos_alive)
 	{
 		if (take_forks(philo))
