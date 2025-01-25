@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:47:38 by asplavni          #+#    #+#             */
-/*   Updated: 2025/01/24 23:15:00 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/25 05:27:33 by antonsplavn      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,23 @@
 
 void	data_init(t_data *data)
 {
-	int	i;
-
-	i = 0;
 	data->philos_alive = 1;
 	data->philos = NULL;
 	data->threads = NULL;
 	data->mutex_forks = NULL;
 }
 
-void	philo_init(t_data *data)
+int	philo_init(t_data *data)
 {
 	int	i;
 
 	i = 0;
 	data->philos = malloc(data->number_of_philosophers * sizeof(t_philo));
-	if(data->philos == NULL)
+	if (data->philos == NULL)
 	{
-		free_data(data);
-		exit(1);
+		mutex_destroy(data);
+		free(data->mutex_forks);
+		return (1);
 	}
 	while (i < data->number_of_philosophers)
 	{
@@ -46,9 +44,34 @@ void	philo_init(t_data *data)
 											% data->number_of_philosophers];
 		i++;
 	}
+	return (0);
 }
 
-void	threads_init(t_data *data)
+int	mutex_init(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	data->mutex_forks = \
+				malloc (data->number_of_philosophers * sizeof(pthread_mutex_t));
+	if (data->mutex_forks == NULL)
+	{
+		return (1);
+	}
+	pthread_mutex_init(&data->mutex_has_eaten, NULL);
+	pthread_mutex_init(&data->mutex_is_alive, NULL);
+	pthread_mutex_init(&data->mutex_last_meal, NULL);
+	pthread_mutex_init(&data->mutex_print, NULL);
+	while (i < data->number_of_philosophers)
+	{
+		pthread_mutex_init(&data->mutex_forks[i], NULL);
+		usleep(100);
+		i++;
+	}
+	return (0);
+}
+
+int	threads_init(t_data *data)
 {
 	int	i;
 
@@ -56,101 +79,17 @@ void	threads_init(t_data *data)
 	data->threads = malloc(data->number_of_philosophers * sizeof(pthread_t));
 	if (data->threads == NULL)
 	{
-		free_data(data);
-		exit (1);
+		mutex_destroy(data);
+		free(data->mutex_forks);
+		free(data->philos);
+		return (1);
 	}
-	if (pthread_create(&data->thread_manager, NULL, \
-									&manager_routine, (void *)data) != 0)
-	{
-		free_data(data);
-		exit (1);
-	}
+	pthread_create(&data->thread_manager, NULL, &manager_routine, (void *)data);
 	while (i < data->number_of_philosophers)
 	{
-		if (pthread_create(&data->threads[i], NULL, \
-				&philo_routine, (void *)&data->philos[i]) != 0)
-		{
-			free_data(data);
-			exit (1);
-		}
+		pthread_create(&data->threads[i], NULL, \
+						&philo_routine, (void *)&data->philos[i]);
 		i++;
 	}
-}
-
-void	thread_join(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	pthread_join(data->thread_manager, NULL);
-
-	while (i < data->number_of_philosophers)
-	{
-		pthread_join(data->threads[i], NULL);
-		i++;
-	}
-}
-
-void	mutex_init(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	data->mutex_forks = malloc(data->number_of_philosophers *sizeof(pthread_mutex_t));
-	if (data->mutex_forks == NULL)
-	{
-		free_data(data);
-		exit (1);
-	}
-	if (pthread_mutex_init(&data->mutex_has_eaten, NULL) != 0)
-	{
-		free_data(data);
-		exit (1);
-	}
-	if (pthread_mutex_init(&data->mutex_is_alive, NULL) != 0)
-	{
-		free_data(data);
-		exit (1);
-	}
-	if (pthread_mutex_init(&data->mutex_last_meal, NULL) != 0)
-	{
-		free_data(data);
-		exit (1);
-	}
-	if (pthread_mutex_init(&data->mutex_print, NULL) != 0)
-	{
-		free_data(data);
-		exit (1);
-	}
-	while (i < data->number_of_philosophers)
-	{
-		if (pthread_mutex_init(&data->mutex_forks[i], NULL) != 0)
-		{
-			free_data(data);
-			exit (1);
-		}
-		custom_usleep(1);
-		i++;
-	}
-}
-
-void	mutex_destroy(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	pthread_mutex_destroy(&data->mutex_print);
-	pthread_mutex_destroy(&data->mutex_is_alive);
-	pthread_mutex_destroy(&data->mutex_last_meal);
-	pthread_mutex_destroy(&data->mutex_has_eaten);
-
-	while (i < data->number_of_philosophers)
-	{
-		if (pthread_mutex_destroy(&data->mutex_forks[i]) != 0)
-		{
-			free_data(data);
-			exit (1);
-		}
-		i++;
-	}
+	return (0);
 }

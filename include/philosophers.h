@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/25 00:15:39 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/25 05:32:35 by antonsplavn      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <sys/time.h>
 
 typedef	struct	timeval	Time;
-typedef struct s_philo t_philo;
-typedef struct s_data t_data;
+typedef struct	s_philo t_philo;
+typedef struct	s_data t_data;
 
 typedef struct s_philo
 {
@@ -64,27 +64,46 @@ typedef struct s_data
 
 
 // main.c
-void	cleanup_data(t_data *data);
-void	free_data(t_data *data);
-void	*philo_routine(void *arg);
-void	*manager_routine(void *data);
 int		main(int argc, char **argv);
 
-// init
+// corner_cases.c
+int		corner_cases(t_data *data);
+
+// parsing.c
+int		parsing(t_data *philo, int argc, char **argv);
+
+// init.c
 void	data_init(t_data *data);
-void	philo_init(t_data *data);
-void	threads_init(t_data *data);
+int		philo_init(t_data *data);
+int		mutex_init(t_data *data);
+int		threads_init(t_data *data);
+
+// actions_core.c
+int		eat(t_philo *philo);
+int		p_sleep(t_philo *philo);
+
+// actions_forks.c
+int		take_forks(t_philo *philo);
+
+// cleanaup.c
+void	free_data(t_data *data);
 void	thread_join(t_data *data);
-void	mutex_init(t_data *data);
 void	mutex_destroy(t_data *data);
 
-// time.c
+// routines.c
+void	*manager_routine(void *arg);
+void	*philo_routine(void *arg);
+int		check_philos_alive(t_philo *philo);
+
+// status.c
+int		philo_death_status(t_data *data, int i);
+int		philo_food_count_status(t_data *data);
+
+// utils.c
 long	get_time(void);
 long	elapsed_time(long start, long end);
 void	custom_usleep(long	milliseconds);
-
-// parsing.c
-int	parsing(t_data *philo, int argc, char **argv);
+void	print_message(t_philo *philo, const char *message);
 
 // input_validation.c
 int		validate_arguments(int argc, char **argv);

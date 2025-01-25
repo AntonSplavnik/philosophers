@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_validation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:11:22 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/25 00:15:17 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/25 05:28:36 by antonsplavn      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,14 @@ int	validate_arguments(int argc, char **argv)
 	int	i;
 
 	i = 1;
-
-	if (argc > 6)
-	{
-		ft_putstr("Too many arguments. should be (4 - 5) arguments\n");
-		return (1);
-	}
-	else if (argc < 5)
+	if (argc < 5)
 	{
 		ft_putstr("Not enough arguments. Should be (4 - 5) arguments\n");
+		return (1);
+	}
+	else if (argc > 6)
+	{
+		ft_putstr("Too many arguments. should be (4 - 5) arguments\n");
 		return (1);
 	}
 	while (argv[i])
