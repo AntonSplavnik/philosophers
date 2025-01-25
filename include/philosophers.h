@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 19:54:30 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/22 21:54:42 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/25 00:15:39 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_data
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				number_of_times_each_philosopher_must_eat;
+	int				num_of_times_each_philo_must_eat;
 
 	int				philos_alive;
 	int				*fork_status;
@@ -55,9 +55,9 @@ typedef struct s_data
 	pthread_t		thread_manager;
 	pthread_t		*threads;
 
+	pthread_mutex_t	mutex_has_eaten;
 	pthread_mutex_t	mutex_last_meal;
 	pthread_mutex_t	mutex_is_alive;
-	pthread_mutex_t	mutex_status;
 	pthread_mutex_t	mutex_print;
 	pthread_mutex_t	*mutex_forks;
 }	t_data;
@@ -84,10 +84,10 @@ long	elapsed_time(long start, long end);
 void	custom_usleep(long	milliseconds);
 
 // parsing.c
-void	parsing(t_data *philo, int argc, char **argv);
+int	parsing(t_data *philo, int argc, char **argv);
 
 // input_validation.c
-void	validate_arguments(int argc, char **argv);
+int		validate_arguments(int argc, char **argv);
 int		validate_characters(char *input_str, int i);
 int		validate_input_string(char *input_str);
 int		validate_number_limits(long number);

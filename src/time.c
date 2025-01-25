@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   helper_functions.c                                 :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 19:37:16 by asplavni          #+#    #+#             */
-/*   Updated: 2025/01/14 18:12:02 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/23 21:09:45 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ long	get_time(void)
 	gettimeofday(&time_now, NULL);
 	return (time_now.tv_sec * 1000 + time_now.tv_usec / 1000);
 }
-
+/**
+ * elapsed time between two timestams in milliseconds.
+ */
 long	elapsed_time(long start, long end)
 {
 	return (end - start);

@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:47:38 by asplavni          #+#    #+#             */
-/*   Updated: 2025/01/22 21:55:44 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/01/24 23:15:00 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,6 @@ void	data_init(t_data *data)
 	int	i;
 
 	i = 0;
-	data->fork_status = malloc(data->number_of_philosophers * sizeof(int));
-	if (data->fork_status == NULL)
-		exit (1);
-	while (i < data->number_of_philosophers)
-	{
-		data->fork_status[i] = 0;
-		i++;
-	}
 	data->philos_alive = 1;
 	data->philos = NULL;
 	data->threads = NULL;
@@ -67,14 +59,16 @@ void	threads_init(t_data *data)
 		free_data(data);
 		exit (1);
 	}
-	if (pthread_create(&data->thread_manager, NULL, &manager_routine, (void *)data) != 0)
+	if (pthread_create(&data->thread_manager, NULL, \
+									&manager_routine, (void *)data) != 0)
 	{
 		free_data(data);
 		exit (1);
 	}
 	while (i < data->number_of_philosophers)
 	{
-		if (pthread_create(&data->threads[i], NULL, &philo_routine, (void *)&data->philos[i]) != 0)
+		if (pthread_create(&data->threads[i], NULL, \
+				&philo_routine, (void *)&data->philos[i]) != 0)
 		{
 			free_data(data);
 			exit (1);
@@ -108,17 +102,17 @@ void	mutex_init(t_data *data)
 		free_data(data);
 		exit (1);
 	}
+	if (pthread_mutex_init(&data->mutex_has_eaten, NULL) != 0)
+	{
+		free_data(data);
+		exit (1);
+	}
 	if (pthread_mutex_init(&data->mutex_is_alive, NULL) != 0)
 	{
 		free_data(data);
 		exit (1);
 	}
 	if (pthread_mutex_init(&data->mutex_last_meal, NULL) != 0)
-	{
-		free_data(data);
-		exit (1);
-	}
-	if (pthread_mutex_init(&data->mutex_status, NULL) != 0)
 	{
 		free_data(data);
 		exit (1);
@@ -148,7 +142,7 @@ void	mutex_destroy(t_data *data)
 	pthread_mutex_destroy(&data->mutex_print);
 	pthread_mutex_destroy(&data->mutex_is_alive);
 	pthread_mutex_destroy(&data->mutex_last_meal);
-	pthread_mutex_destroy(&data->mutex_status);
+	pthread_mutex_destroy(&data->mutex_has_eaten);
 
 	while (i < data->number_of_philosophers)
 	{

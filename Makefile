@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: parallels <parallels@student.42.fr>        +#+  +:+       +#+         #
+#    By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/30 22:22:02 by antonsplavn       #+#    #+#              #
-#    Updated: 2025/01/19 01:14:53 by parallels        ###   ########.fr        #
+#    Updated: 2025/01/23 20:43:48 by asplavni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,6 +54,10 @@ tsan: $(NAME)
 # Build with MemorySanitizer
 msan: CFLAGS += -fsanitize=memory
 msan: $(NAME)
+
+# Build with Helgrind (make helgrind -> valgrind --tool=helgrind ./philo)
+helgrind: CFLAGS += -g
+helgrind: $(NAME)
 
 # Linking the Binary
 $(NAME): $(OBJS)
