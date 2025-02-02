@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   general_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
+/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 20:35:02 by antonsplavn       #+#    #+#             */
-/*   Updated: 2024/12/02 15:06:26 by antonsplavn      ###   ########.fr       */
+/*   Updated: 2025/02/02 22:41:04 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ void	*ft_calloc(size_t num, size_t size)
 	return (new_allocation);
 }
 
-int	ft_atoi(char *input_str)
+long	ft_atoi(char *input_str)
 {
 	int		i;
 	int		sign;
-	int		result;
+	long	result;
 
 	i = 0;
 	sign = 1;

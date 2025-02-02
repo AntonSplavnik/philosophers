@@ -1,5 +1,0 @@
-unused functions:
-	ft_strncpy
-	ft_strcmp
-
-1. sugestion to use mutex on philo_is_alive and check for it inside an infinit loop.

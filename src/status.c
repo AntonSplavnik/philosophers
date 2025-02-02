@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   status.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
+/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 04:58:15 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/25 05:12:32 by antonsplavn      ###   ########.fr       */
+/*   Updated: 2025/02/05 17:55:24 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	philo_death_status(t_data *data, int i)
 		pthread_mutex_lock(&data->mutex_is_alive);
 		data->philos_alive = 0;
 		pthread_mutex_unlock(&data->mutex_is_alive);
+		usleep(200);
 		print_message(&data->philos[i], "died");
 		return (1);
 	}

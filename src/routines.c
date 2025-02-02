@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routines.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
+/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 18:21:00 by asplavni          #+#    #+#             */
-/*   Updated: 2025/01/25 05:05:47 by antonsplavn      ###   ########.fr       */
+/*   Updated: 2025/02/05 17:54:32 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	*philo_routine(void *arg)
 	while (1)
 	{
 		if (!check_philos_alive(philo))
+			break ;
+		if (think(philo))
 			break ;
 		if (take_forks(philo))
 			break ;
