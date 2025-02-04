@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   corner_cases.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonsplavnik <antonsplavnik@student.42    +#+  +:+       +#+        */
+/*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 04:29:01 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/01/25 04:29:27 by antonsplavn      ###   ########.fr       */
+/*   Updated: 2025/02/04 21:06:41 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ int	one_philo(t_data *data)
 	}
 	return (0);
 }
+int	zero_philo(t_data *data)
+{
+	if (data->number_of_philosophers == 0)
+		return (1);
+	return (0);
+}
 
 int	zero_cycles(t_data *data)
 {
@@ -35,6 +41,8 @@ int	zero_cycles(t_data *data)
 int	corner_cases(t_data *data)
 {
 	if (one_philo(data))
+		return (1);
+	if (zero_philo(data))
 		return (1);
 	if (zero_cycles(data))
 		return (1);
