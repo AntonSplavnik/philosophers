@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 19:37:16 by asplavni          #+#    #+#             */
-/*   Updated: 2025/02/05 17:55:55 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/02/05 18:17:43 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,15 @@ long	elapsed_time(long start, long end)
 /**
  * custom usleep function with more precision.
  */
-void	custom_usleep(long milliseconds)
+void	custom_usleep(t_data *data, long milliseconds)
 {
 	long	start;
 
 	start = get_time();
 	while ((get_time() - start) < milliseconds)
 	{
+		if (!check_philos_alive(data->philos))
+			break;
 		usleep(10);
 	}
 }
@@ -48,7 +50,8 @@ void	custom_usleep(long milliseconds)
 void	print_message(t_philo *philo, const char *message)
 {
 	pthread_mutex_lock(&philo->data->mutex_print);
-	printf("%ld %d %s\n", \
+	if (check_philos_alive(philo))
+		printf("%ld %d %s\n", \
 		elapsed_time(philo->timer_start, get_time()), philo->id, message);
 	pthread_mutex_unlock(&philo->data->mutex_print);
 }
