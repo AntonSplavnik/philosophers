@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 19:37:16 by asplavni          #+#    #+#             */
-/*   Updated: 2025/02/05 18:17:43 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:40:40 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	custom_usleep(t_data *data, long milliseconds)
 	while ((get_time() - start) < milliseconds)
 	{
 		if (!check_philos_alive(data->philos))
-			break;
+			break ;
 		usleep(10);
 	}
 }

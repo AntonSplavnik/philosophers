@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 04:29:01 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/02/04 21:06:41 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:45:02 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	one_philo(t_data *data)
 	}
 	return (0);
 }
+
 int	zero_philo(t_data *data)
 {
 	if (data->number_of_philosophers == 0)

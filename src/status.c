@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 04:58:15 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/02/05 18:27:53 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/03/16 18:41:58 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	philo_death_status(t_data *data, int i)
 		pthread_mutex_unlock(&data->mutex_is_alive);
 		pthread_mutex_lock(&data->mutex_print);
 		printf("%ld %d died\n", \
-			elapsed_time(data->philos->timer_start, get_time()), data->philos[i].id);
+			elapsed_time(data->philos->timer_start, get_time()), \
+							data->philos[i].id);
 		pthread_mutex_unlock(&data->mutex_print);
-		// print_message(&data->philos[i], "died");
 		return (1);
 	}
 	pthread_mutex_unlock(&data->mutex_last_meal);

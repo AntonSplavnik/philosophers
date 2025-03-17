@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 04:49:31 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/02/05 18:32:24 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/03/17 12:56:52 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,25 @@
 
 int	think(t_philo *philo)
 {
+	long	think1;
+	long	think2;
+
+	think1 = 0;
+	think2 = 0;
 	if (!check_philos_alive(philo))
 		return (1);
 	print_message(philo, "is thinking");
-	usleep(200);
+	if (philo->data->number_of_philosophers % 2)
+	{
+		think1 = philo->data->time_to_die - philo->data->time_to_sleep \
+				- philo->data->time_to_eat;
+		think2 = philo->data->time_to_eat + 10;
+		if (think2 < think1)
+			think1 = think2;
+		usleep(think1 * 1000);
+	}
+	else
+		usleep(200);
 	return (0);
 }
 

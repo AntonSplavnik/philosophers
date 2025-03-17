@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 04:38:00 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/02/05 17:54:03 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:43:53 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	take_left_fork(t_philo *philo)
 
 int	take_right_fork(t_philo *philo)
 {
-
 	if (!check_philos_alive(philo))
 		return (1);
 	pthread_mutex_lock(philo->mutex_right_fork);
