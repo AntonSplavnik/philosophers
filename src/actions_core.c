@@ -6,7 +6,7 @@
 /*   By: asplavni <asplavni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 04:49:31 by antonsplavn       #+#    #+#             */
-/*   Updated: 2025/03/17 12:56:52 by asplavni         ###   ########.fr       */
+/*   Updated: 2025/03/19 14:57:55 by asplavni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	think(t_philo *philo)
 	if (!check_philos_alive(philo))
 		return (1);
 	print_message(philo, "is thinking");
+	//the folowing code should fix case 3 600 200 100 (but on different computers it behaves differently)
 	if (philo->data->number_of_philosophers % 2)
 	{
 		think1 = philo->data->time_to_die - philo->data->time_to_sleep \
